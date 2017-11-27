@@ -34,7 +34,7 @@ window.renderStatistics = function(ctx, names, times) {
    ctx.shadowColor = "rgba(0, 0, 0, 0)"; //убрать тень у диаграмм
 
    var randomNumber = Math.random(); //случайное число с округлением
-   if (names[i] == "Вы") {
+   if (names[i] === "Вы") {
      ctx.fillStyle = "rgba(255, 0, 0, 1)";
      ctx.fillRect(initialX + indent * i, 270 - times[i] * step - initialY,
        histogramWidth, times[i] * step);
