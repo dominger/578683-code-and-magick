@@ -1,14 +1,12 @@
 "use strict";
 
-var characterMenu = document.querySelector(".setup");
-characterMenu.classList.remove("hidden"); //через classList удаляем класс hidden
+var characterMenu = document.querySelector (".setup");
+characterMenu.classList.remove ("hidden"); // через classList удаляем класс hidden
 
-document.querySelector(".setup-similar").classList.remove("hidden");
-
-var similarListElement = document.querySelector(".setup-similar-list"); //список похожих волшебников
-var similarWizardTemplate = document.querySelector("#similar-wizard-template")
-  .content; //копируем содержимое шаблона template, сам шаблон
-          // никак не отрисовывается в DOM дереве
+var similarListElement = document.querySelector (".setup-similar-list"); // список похожих волшебников
+var similarWizardTemplate = document.querySelector("#similar-wizard-template").content.querySelector
+                      (".setup-similar-item");// копируем содержимое шаблона template, сам шаблон
+                                          // никак не отрисовывается в DOM дереве
 
 var WIZARD_NAMES = [
   "Иван",
@@ -49,73 +47,78 @@ var EYES_COLOR = [
   "green"
 ];
 
-// функция получения случайного числа
-function compareRandom(a, b) {
-  return Math.random() - 0.5;
+// функция генерации случайного имени
+var generateRandomName = function () {
+    var randomNameNumber = Math.floor(Math.random() * WIZARD_NAMES.length);
+    return WIZARD_NAMES[randomNameNumber];
+  }
+
+// функция генерации случайногой фамилии
+var generateRandomFamilys = function () {
+  var randomFamilyNumber = Math.floor(Math.random() * WIZARD_FAMILYS.length);
+  return WIZARD_FAMILYS[randomFamilyNumber];
 }
 
-// функция (sort), перемешивает указанный массив
-WIZARD_NAMES.sort(compareRandom);
-WIZARD_FAMILYS.sort(compareRandom);
-COAT_COLOR.sort(compareRandom);
-EYES_COLOR.sort(compareRandom);
+// функция генерации случайного цвета пальто
+var generateRandomCoatColor = function () {
+  var randomCoatColorNumber = Math.floor(Math.random() * COAT_COLOR.length);
+  return COAT_COLOR[randomCoatColorNumber];
+}
 
+// функция генерации случайного цвета глаз
+var generateRandomEyesColor = function () {
+  var randomEyesColorNumber = Math.floor(Math.random() * EYES_COLOR.length);
+  return EYES_COLOR[randomEyesColorNumber];
+}
+
+// массив персонажей
 var wizards = [
   {
-    name: WIZARD_NAMES[0],
-    family: WIZARD_FAMILYS[0],
-    /*coatColor: function() {
-      for(var i = 0; i < COAT_COLOR.length; i++) {
-        return COAT_COLOR[i];
-      }
-    }*/ //  ??? как быть с цветом мантий, если цветов меньше чем самих персонажей, а нам нужно случайный цвет,
-            // как это через оюъект можно сделать ???
+    name: generateRandomName(),
+    familys: generateRandomFamilys(),
+    coatColor: generateRandomCoatColor(),
+    eyesColor: generateRandomEyesColor()
   },
   {
-    name: WIZARD_NAMES[1],
-    family: WIZARD_FAMILYS[1],
+    name: generateRandomName(),
+    familys: generateRandomFamilys(),
+    coatColor: generateRandomCoatColor(),
+    eyesColor: generateRandomEyesColor()
   },
   {
-    name: WIZARD_NAMES[2],
-    family: WIZARD_FAMILYS[2],
+    name: generateRandomName(),
+    familys: generateRandomFamilys(),
+    coatColor: generateRandomCoatColor(),
+    eyesColor: generateRandomEyesColor()
   },
   {
-    name: WIZARD_NAMES[3],
-    family: WIZARD_FAMILYS[3],
-  },
-  {
-    name: WIZARD_NAMES[4],
-    family: WIZARD_FAMILYS[4],
-  },
-  {
-    name: WIZARD_NAMES[5],
-    family: WIZARD_FAMILYS[5],
-  },
-  {
-    name: WIZARD_NAMES[6],
-    family: WIZARD_FAMILYS[6],
-  },
-  {
-    name: WIZARD_NAMES[7],
-    family: WIZARD_FAMILYS[7],
+    name: generateRandomName(),
+    familys: generateRandomFamilys(),
+    coatColor: generateRandomCoatColor(),
+    eyesColor: generateRandomEyesColor()
   }
 ];
 
-for(var i = 0; i < wizards.length; i++) {
-  var wizardElement = similarWizardTemplate.cloneNode(true); //клонируем (cloneNode) содержимое
-                                                            // шаблона, (true) - до самого конца
-  wizardElement.querySelector(".setup-similar-label").textContent = wizards[i].name
-                                                      + " " + wizards[i].family; // добавляем новые И + Ф
+// заполнение блока DOM элементами на основе JS-объектов
+var renderWizard = function (wizard) {
+  var wizardElement = similarWizardTemplate.cloneNode(true); //клонируем (cloneNode) содержимое шаблона, (true) - до самого конца
 
-  wizardElement.querySelector(".wizard-coat").style.fill = COAT_COLOR[i];
-  wizardElement.querySelector(".wizard-eyes").style.fill = EYES_COLOR[i];
-  //wizardElement.querySelector(".wizard-coat").style.fill = wizards[i].coatColor();
+  wizardElement.querySelector(".setup-similar-label").textContent = wizard.name
+                                                        + " " + wizard.familys; // добавляем новые И + Ф
+  wizardElement.querySelector(".wizard-coat").style.fill = wizard.coatColor; // добавляем цвет пальто
+  wizardElement.querySelector(".wizard-eyes").style.fill = wizard.eyesColor; // добавляем цвет глаз
 
-  similarListElement.appendChild(wizardElement); // добавляем в список похожих персонажей (appendChild)
-
-  if(i >= 3) { // ??? вопрос тут. Так он выводит 4 магов, а если бех такого условия, то ровно столько,
-             // сколько длина объекта wizards, если не так, то как быть, как красивее ???
-    break;
-  }
+  return wizardElement;
 }
+
+var fragment = document.createDocumentFragment(); // контейнер, временная группировка элементов в document
+                                                // после вставки элементов, контейнер createDocumentFragment удаляется
+for (var i = 0; i < wizards.length; i++) {
+  fragment.appendChild(renderWizard(wizards[i])); // вставка элементов в DOM
+}
+
+document.querySelector(".setup-similar").classList.remove("hidden"); // показываем блок похожих персонажей
+similarListElement.appendChild(fragment); // добавляем в список похожих персонажей (appendChild)
+
+
 
