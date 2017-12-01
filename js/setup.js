@@ -47,57 +47,38 @@ var EYES_COLOR = [
   "green"
 ];
 
-// функция генерации случайного имени
-var generateRandomName = function () {
-    var randomNameNumber = Math.floor(Math.random() * WIZARD_NAMES.length);
-    return WIZARD_NAMES[randomNameNumber];
-  }
-
-// функция генерации случайногой фамилии
-var generateRandomFamilys = function () {
-  var randomFamilyNumber = Math.floor(Math.random() * WIZARD_FAMILYS.length);
-  return WIZARD_FAMILYS[randomFamilyNumber];
+// функция генерации слуайных данных персонажа
+var generateDataCharacter = function (arrayData) {
+  var randomNumber = Math.floor(Math.random() * arrayData.length);
+  return arrayData[randomNumber];
 }
 
-// функция генерации случайного цвета пальто
-var generateRandomCoatColor = function () {
-  var randomCoatColorNumber = Math.floor(Math.random() * COAT_COLOR.length);
-  return COAT_COLOR[randomCoatColorNumber];
-}
-
-// функция генерации случайного цвета глаз
-var generateRandomEyesColor = function () {
-  var randomEyesColorNumber = Math.floor(Math.random() * EYES_COLOR.length);
-  return EYES_COLOR[randomEyesColorNumber];
-}
-
-// массив персонажей
-var wizards = [
-  {
-    name: generateRandomName(),
-    familys: generateRandomFamilys(),
-    coatColor: generateRandomCoatColor(),
-    eyesColor: generateRandomEyesColor()
-  },
-  {
-    name: generateRandomName(),
-    familys: generateRandomFamilys(),
-    coatColor: generateRandomCoatColor(),
-    eyesColor: generateRandomEyesColor()
-  },
-  {
-    name: generateRandomName(),
-    familys: generateRandomFamilys(),
-    coatColor: generateRandomCoatColor(),
-    eyesColor: generateRandomEyesColor()
-  },
-  {
-    name: generateRandomName(),
-    familys: generateRandomFamilys(),
-    coatColor: generateRandomCoatColor(),
-    eyesColor: generateRandomEyesColor()
-  }
-];
+  var wizards = [
+    {
+      name: generateDataCharacter(WIZARD_NAMES),
+      familys: generateDataCharacter(WIZARD_FAMILYS),
+      coatColor: generateDataCharacter(COAT_COLOR),
+      eyesColor: generateDataCharacter(EYES_COLOR)
+    },
+    {
+      name: generateDataCharacter(WIZARD_NAMES),
+      familys: generateDataCharacter(WIZARD_FAMILYS),
+      coatColor: generateDataCharacter(COAT_COLOR),
+      eyesColor: generateDataCharacter(EYES_COLOR)
+    },
+    {
+      name: generateDataCharacter(WIZARD_NAMES),
+      familys: generateDataCharacter(WIZARD_FAMILYS),
+      coatColor: generateDataCharacter(COAT_COLOR),
+      eyesColor: generateDataCharacter(EYES_COLOR)
+    },
+    {
+      name: generateDataCharacter(WIZARD_NAMES),
+      familys: generateDataCharacter(WIZARD_FAMILYS),
+      coatColor: generateDataCharacter(COAT_COLOR),
+      eyesColor: generateDataCharacter(EYES_COLOR)
+    }
+  ];
 
 // заполнение блока DOM элементами на основе JS-объектов
 var renderWizard = function (wizard) {
