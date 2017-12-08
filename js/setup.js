@@ -1,8 +1,78 @@
 "use strict";
 
-var characterMenu = document.querySelector (".setup");
-characterMenu.classList.remove ("hidden"); // через classList удаляем класс hidden
+var KEYCODE_ENTER = 13;
+var KEYCODE_ESC = 27;
 
+var setup = document.querySelector (".setup");
+var setupClose = document.querySelector(".setup-close");
+var setupOpen = document.querySelector(".setup-open-icon");
+
+/*
+начало открытия и закрытие меню персонажа
+*/
+
+var onPopupEscPress = function (evt) {
+  if (evt.keyCode === KEYCODE_ESC) {
+    setup.classList.add ("hidden"); // через classList добавляем класс hidden
+  }
+};
+
+var openPopup = function () {
+  setup.classList.remove ("hidden"); // через classList удаляем класс hidden
+  document.addEventListener("keydown", onPopupEscPress);
+}
+
+var closePopup = function () {
+  setup.classList.add ("hidden"); // через classList добавляем класс hidden
+  document.removeEventListener("keydown", onPopupEscPress);
+}
+
+// открытие меню персонажа через клик по крестику
+setupOpen.addEventListener("click", function () {
+  openPopup();
+});
+
+// открытие меню персонажа через enter по крестику
+setupOpen.addEventListener("keydown", function (evt) {
+  if (evt.keyCode === KEYCODE_ENTER) {
+    openPopup();
+  }
+});
+
+// закрытия меню персонажа через клику по крестику
+setupClose.addEventListener("click", function () {
+  closePopup();
+});
+
+// закрытия меню персонажа через enter по крестику
+setupClose.addEventListener("keydown", function (evt) {
+  if (evt.keyCode === KEYCODE_ENTER) {
+    closePopup();
+  }
+});
+
+// если фокус находится на форме ввода имени, то окно закрываться не должно
+var enterName = document.querySelector(".setup-user-name");
+
+// валидация ввода имени персонажа
+var userEnterName = document.querySelector(".setup-user-name");
+userEnterName.addEventListener("invalid", function (evt) {
+  if (userEnterName.validity.tooShort) {
+    userEnterName.setCustomValidity("Имя должно состоять минимум из 2-х символов");
+  } else if (userEnterName.validity.tooLong) {
+    userEnterName.setCustomValidity("Имя не должно превышать 25-ти символов");
+  } else if (userEnterName.validity.valueMissing) {
+    userEnterName.setCustomValidity("Необходимо заполнить поле");
+  } else {
+    userEnterName.setCustomValidity("");
+  }
+});
+
+/*
+конец открытия и закрытие меню персонажа
+*/
+
+document.querySelector(".setup-similar").classList.remove("hidden"); // показываем блок похожих персонажей
 var similarListElement = document.querySelector (".setup-similar-list"); // список похожих волшебников
 var similarWizardTemplate = document.querySelector("#similar-wizard-template").content.querySelector
                       (".setup-similar-item");// копируем содержимое шаблона template, сам шаблон
@@ -30,7 +100,7 @@ var WIZARD_FAMILYS = [
   "Ирвинг"
 ];
 
-var COAT_COLOR = [
+var COAT_COLORS = [
   "rgb(241, 43, 107)",
   "rgb(241, 43, 107)",
   "rgb(146, 100, 161)",
@@ -39,7 +109,7 @@ var COAT_COLOR = [
   "rgb(0, 0, 0)"
 ];
 
-var EYES_COLOR = [
+var EYES_COLORS = [
   "black",
   "red",
   "blue",
@@ -47,55 +117,45 @@ var EYES_COLOR = [
   "green"
 ];
 
-// функция генерации случайного имени
-var generateRandomName = function () {
-    var randomNameNumber = Math.floor(Math.random() * WIZARD_NAMES.length);
-    return WIZARD_NAMES[randomNameNumber];
-  }
+var FIREBALL_COLORS = [
+  "#ee4830",
+  "#30a8ee",
+  "#5ce6c0",
+  "#e848d5",
+  "#e6e848"
+];
 
-// функция генерации случайногой фамилии
-var generateRandomFamilys = function () {
-  var randomFamilyNumber = Math.floor(Math.random() * WIZARD_FAMILYS.length);
-  return WIZARD_FAMILYS[randomFamilyNumber];
-}
-
-// функция генерации случайного цвета пальто
-var generateRandomCoatColor = function () {
-  var randomCoatColorNumber = Math.floor(Math.random() * COAT_COLOR.length);
-  return COAT_COLOR[randomCoatColorNumber];
-}
-
-// функция генерации случайного цвета глаз
-var generateRandomEyesColor = function () {
-  var randomEyesColorNumber = Math.floor(Math.random() * EYES_COLOR.length);
-  return EYES_COLOR[randomEyesColorNumber];
+// рагдомная генерация данных персонажа
+var generateDataPerson = function (array) {
+  var randomNameNumber = Math.floor(Math.random() * array.length);
+  return array[randomNameNumber];
 }
 
 // массив персонажей
 var wizards = [
   {
-    name: generateRandomName(),
-    familys: generateRandomFamilys(),
-    coatColor: generateRandomCoatColor(),
-    eyesColor: generateRandomEyesColor()
+    name: generateDataPerson(WIZARD_NAMES),
+    familys: generateDataPerson(WIZARD_FAMILYS),
+    coatColor: generateDataPerson(COAT_COLORS),
+    eyesColor: generateDataPerson(EYES_COLORS)
   },
   {
-    name: generateRandomName(),
-    familys: generateRandomFamilys(),
-    coatColor: generateRandomCoatColor(),
-    eyesColor: generateRandomEyesColor()
+    name: generateDataPerson(WIZARD_NAMES),
+    familys: generateDataPerson(WIZARD_FAMILYS),
+    coatColor: generateDataPerson(COAT_COLORS),
+    eyesColor: generateDataPerson(EYES_COLORS)
   },
   {
-    name: generateRandomName(),
-    familys: generateRandomFamilys(),
-    coatColor: generateRandomCoatColor(),
-    eyesColor: generateRandomEyesColor()
+    name: generateDataPerson(WIZARD_NAMES),
+    familys: generateDataPerson(WIZARD_FAMILYS),
+    coatColor: generateDataPerson(COAT_COLORS),
+    eyesColor: generateDataPerson(EYES_COLORS)
   },
   {
-    name: generateRandomName(),
-    familys: generateRandomFamilys(),
-    coatColor: generateRandomCoatColor(),
-    eyesColor: generateRandomEyesColor()
+    name: generateDataPerson(WIZARD_NAMES),
+    familys: generateDataPerson(WIZARD_FAMILYS),
+    coatColor: generateDataPerson(COAT_COLORS),
+    eyesColor: generateDataPerson(EYES_COLORS)
   }
 ];
 
@@ -117,8 +177,22 @@ for (var i = 0; i < wizards.length; i++) {
   fragment.appendChild(renderWizard(wizards[i])); // вставка элементов в DOM
 }
 
-document.querySelector(".setup-similar").classList.remove("hidden"); // показываем блок похожих персонажей
 similarListElement.appendChild(fragment); // добавляем в список похожих персонажей (appendChild)
 
+// изменение цвета мантии персонажа по нажатию
+var setupWizardCoat = document.querySelector(".wizard-coat");
+setupWizardCoat.onclick = function () {
+  setupWizardCoat.style.fill = generateDataPerson(COAT_COLORS);
+};
 
+// изменение цвета глаз персонажа по нажатию
+var setupWizardEyes = document.querySelector(".wizard-eyes");
+setupWizardEyes.onclick = function () {
+  setupWizardEyes.style.fill = generateDataPerson(EYES_COLORS);
+};
 
+// изменение цвета fireball-a персонажа по нажатию
+var setupFireballColors = document.querySelector(".setup-fireball-wrap");
+setupFireballColors.onclick = function () {
+  setupFireballColors.style.backgroundColor = generateDataPerson(FIREBALL_COLORS);
+};

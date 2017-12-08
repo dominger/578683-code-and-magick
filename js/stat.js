@@ -2,7 +2,7 @@
 
 window.renderStatistics = function(ctx, names, times) {
 
- //построение фигуры
+ //построение фигуры //
  ctx.shadowColor = "rgba(0, 0, 0, 0.7)"; //тень
  ctx.shadowOffsetY = 10; //сдвиг тени по X
  ctx.shadowOffsetX = 10; //сдвиг тени по Y
